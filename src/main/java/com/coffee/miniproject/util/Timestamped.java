@@ -1,9 +1,5 @@
 package com.coffee.miniproject.util;
 
-<<<<<<< HEAD
-=======
-import jdk.jfr.Timestamp;
->>>>>>> 1c28ef9 ([etc]First Commit)
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -23,8 +19,4 @@ public class Timestamped {
 
     @LastModifiedDate
     private LocalDateTime modifiedAt;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 1c28ef9 ([etc]First Commit)

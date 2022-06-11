@@ -1,18 +1,10 @@
 package com.coffee.miniproject.model;
 
-<<<<<<< HEAD
-import com.coffee.miniproject.dto.SignupDto;
+
 import com.coffee.miniproject.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
-=======
-import com.coffee.miniproject.util.Timestamped;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
->>>>>>> 1c28ef9 ([etc]First Commit)
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
+import org.springframework.test.annotation.Commit;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,26 +24,19 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private String password;
 
-<<<<<<< HEAD
-=======
     @Transient
     private String passwordCheck;
 
->>>>>>> 1c28ef9 ([etc]First Commit)
     @Column(nullable = false)
     private String nickname;
 
     @Column(nullable = false)
     private UserRole userRole;
 
-<<<<<<< HEAD
     @Column
     private String provider;
 
     @Column
-
-=======
->>>>>>> 1c28ef9 ([etc]First Commit)
     // 자바 객체 사이드에서만 저장됨 (DB에 저장안됨)
     @OneToMany(mappedBy = "member")
     private List<Post> posts;
@@ -60,8 +45,8 @@ public class Member extends Timestamped {
     @OneToMany(mappedBy = "member")
     private List<Comment> comments;
 
-<<<<<<< HEAD
-    public Member(String username, String nickname, String password, UserRole userRole){
+
+    public Member(String username, String nickname, String password, UserRole userRole) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -75,7 +60,5 @@ public class Member extends Timestamped {
         this.userRole = userRole;
         this.provider = provider;
     }
-=======
-
->>>>>>> 1c28ef9 ([etc]First Commit)
 }
+

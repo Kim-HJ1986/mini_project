@@ -1,13 +1,11 @@
 package com.coffee.miniproject.model;
 
-<<<<<<< HEAD
 import com.coffee.miniproject.dto.PostRequestDto;
 import com.coffee.miniproject.dto.PostRequestDto4Put;
-=======
->>>>>>> 1c28ef9 ([etc]First Commit)
 import com.coffee.miniproject.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.test.annotation.Commit;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,7 +25,7 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-<<<<<<< HEAD
+
     // ERD 누락된 column!
     @Column(nullable = false)
     private String nickname;
@@ -37,10 +35,6 @@ public class Post extends Timestamped {
 
     @Column()
     private String img;
-=======
-    @Column(nullable = false)
-    private String imgPath;
->>>>>>> 1c28ef9 ([etc]First Commit)
 
     // FK로 memberId 들어옴.
     @ManyToOne
@@ -50,7 +44,7 @@ public class Post extends Timestamped {
     // 자바 객체 사이드에서만 저장됨 (DB에 저장안됨)
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
-<<<<<<< HEAD
+
 
     // postRequestDto 받는 생성자
     public Post(PostRequestDto requestDto, String nickname){
@@ -71,6 +65,5 @@ public class Post extends Timestamped {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
-=======
->>>>>>> 1c28ef9 ([etc]First Commit)
+
 }
