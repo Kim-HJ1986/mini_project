@@ -1,6 +1,9 @@
 package com.coffee.miniproject.model;
 
+import com.coffee.miniproject.dto.CommentRequestDto;
+import com.coffee.miniproject.repository.CommentRepository;
 import com.coffee.miniproject.util.Timestamped;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,11 +21,11 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    @Column(nullable = false)
-    private String nickname;
+    // @Column(nullable = false)
+    // private String nickname;
 
     // FK로 MEMBER_ID 들어옴.
-    @ManyToOne
+    @ManyToOne //ID 유저네임? 그 이아디?
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
@@ -31,4 +34,19 @@ public class Comment extends Timestamped {
     @JoinColumn(name = "POST_ID")
     private Post post;
 
+    @Builder
+    public Comment(String contents, Post post, Member member) {
+        this.contents = contents;
+    }
+
+    public void registCommentInfo(Post post, Member member) {
+        this.post = post;
+        this.member = member;
+    }
 }
+
+
+
+// pk comment created modified fk fk || nickname -> MEMBER_ID.nickname
+
+// public Comment(Member member){ this.member = member; this.nickname = member.getNickname(); }
