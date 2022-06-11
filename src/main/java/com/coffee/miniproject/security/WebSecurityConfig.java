@@ -36,9 +36,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authz) -> authz
-                        .antMatchers(HttpMethod.POST, "/api/posts/**").authenticated()
-                        .antMatchers(HttpMethod.PUT, "/api/posts/**").authenticated()
-                        .antMatchers(HttpMethod.DELETE, "/api/posts/**").authenticated()
+//                        .antMatchers(HttpMethod.POST, "/api/posts/**").authenticated()
+//                        .antMatchers(HttpMethod.PUT, "/api/posts/**").authenticated()
+//                        .antMatchers(HttpMethod.DELETE, "/api/posts/**").authenticated()
                         .antMatchers("/admin/**").access(hasRole("ROLE_ADMIN"))
                         .anyRequest().permitAll()
                 )
