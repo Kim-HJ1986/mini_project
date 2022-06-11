@@ -35,6 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
 
 # OAuth #
 !**/src/main/resources/application-oauth.properties
+=======
+>>>>>>> 1c28ef9 ([etc]First Commit)
