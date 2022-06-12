@@ -1,7 +1,9 @@
 package com.coffee.miniproject.controller;
 
 import com.coffee.miniproject.dto.CommentRequestDto;
+import com.coffee.miniproject.dto.CommentRequestDto4Put;
 import com.coffee.miniproject.dto.CommentResponseDto;
+import com.coffee.miniproject.dto.PostRequestDto4Put;
 import com.coffee.miniproject.model.Comment;
 import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.repository.CommentRepository;
@@ -34,8 +36,30 @@ public class CommentController {
         return ResponseEntity.ok().body(commentService.getCommentsByPostId(postid));
     }
 
-    //  댓글 삭제
+    // 댓글 삭제
+    @DeleteMapping("/api/post/{postid}/comments/{commentid}")
+    public Boolean deleteComment(@PathVariable Long commentid, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        //사용자의 id가 null값인지 검증
+        Boolean result = false;
 
-    // 댓글 업뎃
+        Long memberid = userDetails.getUser().getId();
+        if (memberid != null) {
+             result = commentService.deleteComment(commentid, memberid);
+        }
+
+        return result;
+    }
+    // 댓글 수정
+    @PutMapping("/api/post/{postid}/comments/{commentid}")
+    public Boolean updateComment(@PathVariable Long commentid, @RequestBody CommentRequestDto4Put requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        //사용자의 id가 null값인지 검증
+        Boolean result = false;
+
+        Long memberid = userDetails.getUser().getId();
+        if (memberid != null) {
+            result = commentService.updateComment(commentid, requestDto, memberid);
+        }
+        return result;
+    }
 }
 
