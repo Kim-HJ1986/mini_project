@@ -4,13 +4,17 @@ import com.coffee.miniproject.dto.PostDetailResponseDto;
 import com.coffee.miniproject.dto.PostRequestDto;
 import com.coffee.miniproject.dto.PostRequestDto4Put;
 import com.coffee.miniproject.dto.PostResponseDto;
+import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.model.Post;
 import com.coffee.miniproject.model.PostCategory;
+import com.coffee.miniproject.repository.MemberRepository;
 import com.coffee.miniproject.repository.PostRepository;
+import com.coffee.miniproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +23,26 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
+//    private final EntityManager em;
 
     // 게시글 등록
     @Transactional
-    public void registerPost(PostRequestDto requestDto, String nickname) {
-        Post post = new Post(requestDto, nickname);
+    public void registerPost(PostRequestDto requestDto, UserDetailsImpl userDetails) {
+        String nickname = userDetails.getUser().getNickname();
+
+        // 게시글 작성자 저장 (편의 메서드 -> member에도 posts에 해당 post add)
+        Member member = memberRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 Id의 회원이 존재하지 않습니다.")
+        );
+        Post post = new Post(requestDto, member);
+
+        // 즉시로딩을 해도, member의 posts는 mappedBy로 인해 자바 객체만 저장되어 별도의 쿼리문이 나가지 않는다.
+        Member userDetailsmember = userDetails.getUser();
+        System.out.println("userDetailsmember = " + userDetailsmember);
+        System.out.println("member = " + member);
+        System.out.println("member's posts = " + member.getPosts());
+
         postRepository.save(post);
     }
 

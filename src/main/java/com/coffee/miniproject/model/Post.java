@@ -2,16 +2,19 @@ package com.coffee.miniproject.model;
 
 import com.coffee.miniproject.dto.PostRequestDto;
 import com.coffee.miniproject.dto.PostRequestDto4Put;
+import com.coffee.miniproject.security.UserDetailsImpl;
 import com.coffee.miniproject.util.Timestamped;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.test.annotation.Commit;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 public class Post extends Timestamped {
 
@@ -37,6 +40,7 @@ public class Post extends Timestamped {
     private String img;
 
     // FK로 memberId 들어옴.
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
@@ -47,11 +51,14 @@ public class Post extends Timestamped {
 
 
     // postRequestDto 받는 생성자
-    public Post(PostRequestDto requestDto, String nickname){
+    public Post(PostRequestDto requestDto, Member member){
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
-        this.nickname = nickname;
+        this.nickname = member.getNickname();
         this.img = requestDto.getImg();
+        this.member = member;
+        // post 등록될 때 작성자의 게시글 리스트에도 this를 추가해준다!
+        member.getPosts().add(this);
 
         if(requestDto.isCategory()){
             this.category = PostCategory.RECIPE;
@@ -61,9 +68,14 @@ public class Post extends Timestamped {
 
     }
 
+    public void setMember(UserDetailsImpl userDetails){
+        this.member = userDetails.getUser();
+    }
+
     public void updatePost(PostRequestDto4Put requestDto) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+        this.img = requestDto.getImg();
     }
 
 }

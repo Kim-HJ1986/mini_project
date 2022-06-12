@@ -4,8 +4,10 @@ import com.coffee.miniproject.dto.PostDetailResponseDto;
 import com.coffee.miniproject.dto.PostRequestDto;
 import com.coffee.miniproject.dto.PostRequestDto4Put;
 import com.coffee.miniproject.dto.PostResponseDto;
+import com.coffee.miniproject.security.UserDetailsImpl;
 import com.coffee.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,12 +22,9 @@ public class PostController {
 
     // 게시글 등록
     @PostMapping("/api/posts")
-    public void registerPost(@RequestBody PostRequestDto requestDto){
-        // 시큐리티 완료 후 로그인 한 유저의 닉네임으로 변경.
-        // + service에서 해당 포스트 작성자 유저 set 해주기.
-        String nickname = "testuser";
-
-        postService.registerPost(requestDto, nickname);
+    public void registerPost(@RequestBody PostRequestDto requestDto,
+                             @AuthenticationPrincipal UserDetailsImpl userDetails){
+        postService.registerPost(requestDto, userDetails);
     }
 
     // 게시글 전체 조회, 검색 조회, 카테고리 조회
