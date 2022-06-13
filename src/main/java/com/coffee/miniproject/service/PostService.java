@@ -28,8 +28,8 @@ public class PostService {
 
     // 게시글 등록
     @Transactional
-    public PostDetailResponseDto registerPost(PostRequestDto requestDto, UserDetailsImpl userDetails) {        
-        Member member = memberRepository.findById(userDetails.getUser().getId()).orElseThrow(
+    public PostDetailResponseDto registerPost(PostRequestDto requestDto, Member memberProxy) {
+        Member member = memberRepository.findById(memberProxy.getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 Id의 회원이 존재하지 않습니다.")
         );
         
@@ -82,12 +82,12 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public void updatePost(Long id, PostRequestDto4Put requestDto, UserDetailsImpl userDetails) {
+    public void updatePost(Long id, PostRequestDto4Put requestDto, Member member) {
         Post post = postRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-        if (!Objects.equals(userDetails.getUser().getId(), post.getMember().getId())){
+        if (!Objects.equals(member.getId(), post.getMember().getId())){
             throw new IllegalArgumentException("본인의 게시글만 수정할 수 있습니다.");
         }
 
@@ -96,12 +96,12 @@ public class PostService {
     }
 
     // 게시글 삭제
-    public void deletePost(Long id, UserDetailsImpl userDetails) {
+    public void deletePost(Long id, Member member) {
         Post post = postRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-        if (!Objects.equals(userDetails.getUser().getId(), post.getMember().getId())){
+        if (!Objects.equals(member.getId(), post.getMember().getId())){
             throw new IllegalArgumentException("본인의 게시글만 수정할 수 있습니다.");
         }
 
