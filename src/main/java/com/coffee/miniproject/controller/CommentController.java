@@ -55,7 +55,7 @@ public class CommentController {
         //사용자의 id가 null값인지 검증
         Boolean result = false;
 
-        Long memberid = userDetails.getUser().getId();
+        Member memberid = userDetails.getUser();
         if (memberid != null) {
             result = commentService.updateComment(commentid, requestDto, memberid);
         }
