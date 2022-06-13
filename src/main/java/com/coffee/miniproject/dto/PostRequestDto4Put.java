@@ -12,4 +12,5 @@ public class PostRequestDto4Put {
     private String title;
     private String contents;
     private String img;
+    private boolean category;
 }

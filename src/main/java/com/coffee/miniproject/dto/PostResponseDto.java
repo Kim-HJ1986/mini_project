@@ -20,14 +20,16 @@ public class PostResponseDto {
 
     private String img;
 
-    private String category;
+    // 카테고리도 true false로 넘기기.
+    private boolean category;
 
     public PostResponseDto(Post post){
         this.title = post.getTitle();
         this.nickname = post.getNickname();
         this.date = post.getModifiedAt();
         this.img = post.getImg();
-        this.category = post.getCategory().name();
+
+        this.category = post.getCategory().name().equals("RECIPE");
     }
 
 }

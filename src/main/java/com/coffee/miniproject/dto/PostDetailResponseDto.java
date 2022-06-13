@@ -22,11 +22,15 @@ public class PostDetailResponseDto {
 
     private LocalDateTime date;
 
+    private boolean category;
+
     public PostDetailResponseDto(Post post){
         this.title = post.getTitle();
         this.contents = post.getContents();
         this.nickname = post.getNickname();
         this.img = post.getImg();
         this.date = post.getModifiedAt();
+
+        this.category = post.getCategory().name().equals("RECIPE");
     }
 }

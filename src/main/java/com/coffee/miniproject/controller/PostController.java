@@ -4,10 +4,13 @@ import com.coffee.miniproject.dto.PostDetailResponseDto;
 import com.coffee.miniproject.dto.PostRequestDto;
 import com.coffee.miniproject.dto.PostRequestDto4Put;
 import com.coffee.miniproject.dto.PostResponseDto;
+import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.security.UserDetailsImpl;
 import com.coffee.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,9 +25,9 @@ public class PostController {
 
     // 게시글 등록
     @PostMapping("/api/posts")
-    public void registerPost(@RequestBody PostRequestDto requestDto,
+    public PostDetailResponseDto registerPost(@RequestBody PostRequestDto requestDto,
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
-        postService.registerPost(requestDto, userDetails);
+        return postService.registerPost(requestDto, userDetails);
     }
 
     // 게시글 전체 조회, 검색 조회, 카테고리 조회
@@ -42,15 +45,19 @@ public class PostController {
 
     // 게시글 수정
     @PutMapping("/api/posts/{id}")
-    public void updatePost(@PathVariable Long id, @RequestBody PostRequestDto4Put requestDto){
+    public void updatePost(@PathVariable Long id,
+                           @RequestBody PostRequestDto4Put requestDto,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails
+                           ){
         // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
-        postService.updatePost(id, requestDto);
+        postService.updatePost(id, requestDto, userDetails);
     }
 
     //게시글 삭제
     @DeleteMapping("/api/posts/{id}")
-    public void deletePost(@PathVariable Long id){
+    public void deletePost(@PathVariable Long id,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails){
         // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
-        postService.deletePost(id);
+        postService.deletePost(id, userDetails);
     }
 }

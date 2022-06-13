@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,22 +28,17 @@ public class PostService {
 
     // 게시글 등록
     @Transactional
-    public void registerPost(PostRequestDto requestDto, UserDetailsImpl userDetails) {
-        String nickname = userDetails.getUser().getNickname();
-
-        // 게시글 작성자 저장 (편의 메서드 -> member에도 posts에 해당 post add)
+    public PostDetailResponseDto registerPost(PostRequestDto requestDto, UserDetailsImpl userDetails) {        
         Member member = memberRepository.findById(userDetails.getUser().getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 Id의 회원이 존재하지 않습니다.")
         );
+        
+        // 게시글 작성자 저장 (편의 메서드 -> member에도 posts에 해당 post add)
         Post post = new Post(requestDto, member);
-
-        // 즉시로딩을 해도, member의 posts는 mappedBy로 인해 자바 객체만 저장되어 별도의 쿼리문이 나가지 않는다.
-        Member userDetailsmember = userDetails.getUser();
-        System.out.println("userDetailsmember = " + userDetailsmember);
-        System.out.println("member = " + member);
-        System.out.println("member's posts = " + member.getPosts());
-
         postRepository.save(post);
+        
+        // 저장된 Post -> PostDetailResponseDto에 담아 리턴
+        return new PostDetailResponseDto(post);
     }
 
     // 게시글 전체 조회, 검색 조회, 카테고리 조회
@@ -54,10 +49,13 @@ public class PostService {
         if(search == null){
             search = "";
         }
+        if(category == null){
+            category = "";
+        }
 
-        if(category == null & search.equals("")){
+        if(category.equals("") & search.equals("")){
             postList = postRepository.findAll();
-        }else if(category == null){
+        }else if(category.equals("")){
             postList = postRepository.findAllByTitleContaining(search);
         }else if(category.equals(PostCategory.RECIPE.name())){
             postList = postRepository.findAllByCategoryAndTitleContaining(PostCategory.RECIPE, search);
@@ -84,17 +82,29 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public void updatePost(Long id, PostRequestDto4Put requestDto) {
+    public void updatePost(Long id, PostRequestDto4Put requestDto, UserDetailsImpl userDetails) {
         Post post = postRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
+
+        if (!Objects.equals(userDetails.getUser().getId(), post.getMember().getId())){
+            throw new IllegalArgumentException("본인의 게시글만 수정할 수 있습니다.");
+        }
 
         post.updatePost(requestDto);
         postRepository.save(post);
     }
 
     // 게시글 삭제
-    public void deletePost(Long id) {
+    public void deletePost(Long id, UserDetailsImpl userDetails) {
+        Post post = postRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
+        );
+
+        if (!Objects.equals(userDetails.getUser().getId(), post.getMember().getId())){
+            throw new IllegalArgumentException("본인의 게시글만 수정할 수 있습니다.");
+        }
+
         postRepository.deleteById(id);
     }
 }
