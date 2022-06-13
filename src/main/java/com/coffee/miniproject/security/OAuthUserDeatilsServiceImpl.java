@@ -5,6 +5,9 @@ import com.coffee.miniproject.model.UserRole;
 import com.coffee.miniproject.repository.MemberRepository;
 import com.coffee.miniproject.security.Provider.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -59,6 +62,9 @@ public class OAuthUserDeatilsServiceImpl extends DefaultOAuth2UserService {
         Member member = memberRepository.findByUsername(username)
                 .orElse(new Member(username, password, nickname, userRole, provider));
         memberRepository.save(member);
+
+//        Authentication auth = new UsernamePasswordAuthenticationToken(member, null);
+//        SecurityContextHolder.getContext().setAuthentication(auth);
 
         return new UserDetailsImpl(member, oAuth2User.getAttributes());
     }

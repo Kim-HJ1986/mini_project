@@ -34,12 +34,12 @@ public class WebSecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .csrf().disable()
-                .formLogin()
-                    .loginPage("/user/login")
-                    .loginProcessingUrl("/user/login")
-                    .defaultSuccessUrl("/api/posts")
-                    .permitAll()
-                    .and()
+
+                .formLogin().disable()
+//                    .loginPage("/user/login")
+//                    .loginProcessingUrl("/user/login")
+//                    .defaultSuccessUrl("/api/posts")
+//                    .permitAll()
                 .logout()
                     .logoutUrl("/user/logout")
                     .logoutSuccessUrl("/api/posts")
@@ -50,8 +50,6 @@ public class WebSecurityConfig {
                     .loginPage("/user/login")
                     .userInfoEndpoint()
                     .userService(oAuthUserDeatilsService)
-
-
 
         ;
         return http.build();

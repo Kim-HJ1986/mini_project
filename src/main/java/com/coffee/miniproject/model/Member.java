@@ -4,7 +4,6 @@ package com.coffee.miniproject.model;
 import com.coffee.miniproject.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.test.annotation.Commit;
 
 import javax.persistence.*;
 import java.util.List;
