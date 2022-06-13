@@ -1,5 +1,8 @@
 package com.coffee.miniproject.model;
 
+import com.coffee.miniproject.dto.CommentRequestDto;
+import com.coffee.miniproject.dto.CommentRequestDto4Put;
+import com.coffee.miniproject.repository.CommentRepository;
 import com.coffee.miniproject.util.Timestamped;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +43,9 @@ public class Comment extends Timestamped {
     public void registCommentInfo(Post post, Member member) {
         this.post = post;
         this.member = member;
+    }
+    public void updateComment(CommentRequestDto4Put requestDto) {
+        this.contents = requestDto.getContents();
     }
 }
 
