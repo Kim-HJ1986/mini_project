@@ -40,3 +40,4 @@ out/
 !**/src/main/resources/application-oauth.properties
 
 coffeedb.mv.db
+coffeedb.lock.db
