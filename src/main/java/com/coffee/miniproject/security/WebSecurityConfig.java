@@ -3,13 +3,10 @@ package com.coffee.miniproject.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
@@ -18,14 +15,8 @@ import static org.springframework.security.authorization.AuthorityAuthorizationM
 @EnableWebSecurity //스프링 시큐리티가 필터체인에 등록됨
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
-
     @Autowired
-    private GoogleUserDeatilsServiceImpl googleUserDeatilsService;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private OAuthUserDeatilsServiceImpl oAuthUserDeatilsService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -58,7 +49,7 @@ public class WebSecurityConfig {
                 .oauth2Login()
                     .loginPage("/user/login")
                     .userInfoEndpoint()
-                    .userService(googleUserDeatilsService)
+                    .userService(oAuthUserDeatilsService)
 
 
 

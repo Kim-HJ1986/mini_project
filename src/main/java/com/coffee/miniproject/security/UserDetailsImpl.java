@@ -1,16 +1,20 @@
 package com.coffee.miniproject.security;
 
 import com.coffee.miniproject.model.Member;
+import com.coffee.miniproject.model.Post;
 import com.coffee.miniproject.model.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
+@Transactional
 public class UserDetailsImpl implements UserDetails, OAuth2User {
 
     private final Member member;
@@ -29,6 +33,10 @@ public class UserDetailsImpl implements UserDetails, OAuth2User {
 
     public Member getUser() {
         return member;
+    }
+
+    public List<Post> getPosts() {
+        return member.getPosts();
     }
 
     @Override
