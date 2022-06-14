@@ -28,8 +28,8 @@ public class PostService {
 
     // 게시글 등록
     @Transactional
-    public PostDetailResponseDto registerPost(PostRequestDto requestDto, Member memberProxy) {
-        Member member = memberRepository.findById(memberProxy.getId()).orElseThrow(
+    public PostDetailResponseDto registerPost(PostRequestDto requestDto, UserDetailsImpl memberProxy) {
+        Member member = memberRepository.findById(memberProxy.getUser().getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 Id의 회원이 존재하지 않습니다.")
         );
         

@@ -30,7 +30,7 @@ public class PostController {
     public PostDetailResponseDto registerPost(@RequestBody PostRequestDto requestDto){
         //@AuthenticationPrincipal은 null로 받아온다. Authentication으로 받아오기.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
+        UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
 
         return postService.registerPost(requestDto, member);
     }
