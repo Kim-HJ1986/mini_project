@@ -55,6 +55,7 @@ public class MemberService {
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         HttpSession session = req.getSession(true);
+        System.out.println("session = " + session);
         session.setAttribute(HttpSessionSecurityContextRepository.
                 SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
     }

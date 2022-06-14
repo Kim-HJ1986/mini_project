@@ -26,6 +26,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .authorizeHttpRequests((authz) -> authz
 //                        .antMatchers(HttpMethod.POST, "/api/posts/**").authenticated()
 //                        .antMatchers(HttpMethod.PUT, "/api/posts/**").authenticated()
@@ -50,6 +52,9 @@ public class WebSecurityConfig {
                     .loginPage("/user/login")
                     .userInfoEndpoint()
                     .userService(oAuthUserDeatilsService)
+
+
+
 
         ;
         return http.build();

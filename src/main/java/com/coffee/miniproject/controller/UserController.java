@@ -10,10 +10,12 @@ import com.coffee.miniproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.header.HeaderWriter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +26,9 @@ public class UserController {
     @PostMapping("/user/login")
     @ResponseBody
     public void loginView(HttpServletRequest req, @RequestBody UserDto userDto){
+        System.out.println("req = " + req.toString());
+        System.out.println("req.getSession() = " + req.getSession().toString());
+        System.out.println("로그인 시도가 들어왔습니다." + userDto.getUsername() + Arrays.toString(req.getCookies()));
         memberService.checkUser(req, userDto);
     }
 
