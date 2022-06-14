@@ -142,6 +142,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
+        configuration.addExposedHeader("Set-Cookie");
         configuration.setAllowCredentials(true);
         configuration.addAllowedOriginPattern("*"); // 배포 전 모두 허용
 

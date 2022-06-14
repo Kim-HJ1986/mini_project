@@ -23,14 +23,14 @@ public class UserController {
     private final MemberService memberService;
 
     //Mock Html
-    @PostMapping("/user/login")
-    @ResponseBody
-    public void loginView(HttpServletRequest req, @RequestBody UserDto userDto){
-        System.out.println("req = " + req.toString());
-        System.out.println("req.getSession() = " + req.getSession().toString());
-        System.out.println("로그인 시도가 들어왔습니다." + userDto.getUsername() + Arrays.toString(req.getCookies()));
-        memberService.checkUser(req, userDto);
-    }
+//    @PostMapping("/user/login")
+//    @ResponseBody
+//    public void loginView(HttpServletRequest req, @RequestBody UserDto userDto){
+//        System.out.println("req = " + req.toString());
+//        System.out.println("req.getSession() = " + req.getSession().toString());
+//        System.out.println("로그인 시도가 들어왔습니다." + userDto.getUsername() + Arrays.toString(req.getCookies()));
+//        memberService.checkUser(req, userDto);
+//    }
 
     //Mock Html
     @GetMapping("/user/signup")

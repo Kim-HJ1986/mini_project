@@ -36,7 +36,7 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private PostCategory category;
 
-    @Column()
+    @Column(length = 65000)
     private String img;
 
     // FK로 memberId 들어옴.
