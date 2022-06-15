@@ -9,7 +9,6 @@ import com.coffee.miniproject.model.Post;
 import com.coffee.miniproject.model.PostCategory;
 import com.coffee.miniproject.repository.MemberRepository;
 import com.coffee.miniproject.repository.PostRepository;
-import com.coffee.miniproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,12 +81,12 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public void updatePost(Long id, PostRequestDto4Put requestDto, UserDetailsImpl member) {
+    public void updatePost(Long id, PostRequestDto4Put requestDto, String username) {
         Post post = postRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-        if (!Objects.equals(member.getUser().getId(), post.getMember().getId())){
+        if (!Objects.equals(username, post.getMember().getUsername())){
             throw new IllegalArgumentException("본인의 게시글만 수정할 수 있습니다.");
         }
 
@@ -96,20 +95,20 @@ public class PostService {
     }
 
     // 게시글 삭제
-    public void deletePost(Long id, UserDetailsImpl member) {
+    public void deletePost(Long id, String username) {
         Post post = postRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-        if (!Objects.equals(member.getUser().getId(), post.getMember().getId())){
+        if (!Objects.equals(username, post.getMember().getUsername())){
             throw new IllegalArgumentException("본인의 게시글만 수정할 수 있습니다.");
         }
 
         postRepository.deleteById(id);
     }
 
-    public void likePost(Long id, UserDetailsImpl memberProxy) {
-        Member member = memberRepository.findById(memberProxy.getUser().getId()).orElseThrow(
+    public void likePost(Long id, String username) {
+        Member member = memberRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 Id의 회원이 존재하지 않습니다.")
         );
 

@@ -56,26 +56,29 @@ public class PostController {
                            @RequestBody PostRequestDto4Put requestDto
                            ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
         // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
-        postService.updatePost(id, requestDto, member);
+        postService.updatePost(id, requestDto, username);
     }
 
     //게시글 삭제
     @DeleteMapping("/api/posts/{id}")
     public void deletePost(@PathVariable Long id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
         // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
-        postService.deletePost(id, member);
+        postService.deletePost(id, username);
     }
 
     // 좋아요 클릭
     @PostMapping("/api/posts/{id}/like")
     public void likePost(@PathVariable Long id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
 
-        postService.likePost(id, member);
+        postService.likePost(id, username);
     }
 }
