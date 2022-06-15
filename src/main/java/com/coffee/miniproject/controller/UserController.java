@@ -1,13 +1,12 @@
 package com.coffee.miniproject.controller;
 
 import com.coffee.miniproject.common.exception.UserException;
-import com.coffee.miniproject.dto.UserDto;
-import com.coffee.miniproject.dto.UserInfo;
-import com.coffee.miniproject.dto.SignupDto;
+import com.coffee.miniproject.dto.*;
 import com.coffee.miniproject.model.UserRole;
 import com.coffee.miniproject.security.UserDetailsImpl;
 import com.coffee.miniproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.header.HeaderWriter;
@@ -33,17 +32,29 @@ public class UserController {
 //    }
 
     //Mock Html
-    @GetMapping("/user/signup")
-    public String signupView(){
-        return "signup";
-    }
+//    @GetMapping("/user/signup")
+//    public String signupView(){
+//        return "signup";
+//    }
 
 
     @PostMapping("/user/signup")
-    @ResponseBody
-    public void signup(@RequestBody SignupDto signupDto) throws UserException {
-        memberService.signup(signupDto);
+    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto memberRequestDto) {
+        return ResponseEntity.ok(memberService.signup(memberRequestDto));
     }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<TokenDto> login(@RequestBody MemberRequestDto memberRequestDto) {
+        return ResponseEntity.ok(memberService.login(memberRequestDto));
+    }
+
+    @PostMapping("/user/reissue")
+    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
+        return ResponseEntity.ok(memberService.reissue(tokenRequestDto));
+    }
+
+
+
 
     @GetMapping("/user/userinfo")
     @ResponseBody

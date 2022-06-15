@@ -3,11 +3,8 @@ package com.coffee.miniproject.security;
 import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.model.UserRole;
 import com.coffee.miniproject.repository.MemberRepository;
-import com.coffee.miniproject.security.Provider.*;
+import com.coffee.miniproject.security.auth.Provider.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -15,7 +12,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Map;
 
 

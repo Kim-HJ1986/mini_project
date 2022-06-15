@@ -2,6 +2,7 @@ package com.coffee.miniproject.model;
 
 
 import com.coffee.miniproject.util.Timestamped;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -58,6 +59,14 @@ public class Member extends Timestamped {
         this.nickname = nickname;
         this.userRole = userRole;
         this.provider = provider;
+    }
+
+    @Builder
+    public Member(String username, String password, UserRole userRole, String nickname) {
+        this.username = username;
+        this.password = password;
+        this.userRole = userRole;
+        this.nickname = nickname;
     }
 }
 

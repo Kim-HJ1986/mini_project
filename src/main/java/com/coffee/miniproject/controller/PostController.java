@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,9 +31,10 @@ public class PostController {
     public PostDetailResponseDto registerPost(@RequestBody PostRequestDto requestDto){
         //@AuthenticationPrincipal은 null로 받아온다. Authentication으로 받아오기.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
 
-        return postService.registerPost(requestDto, member);
+        return postService.registerPost(requestDto, username);
     }
 
     // 게시글 전체 조회, 검색 조회, 카테고리 조회
@@ -66,5 +68,14 @@ public class PostController {
         UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
         // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
         postService.deletePost(id, member);
+    }
+
+    // 좋아요 클릭
+    @PostMapping("/api/posts/{id}/like")
+    public void likePost(@PathVariable Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
+
+        postService.likePost(id, member);
     }
 }

@@ -28,8 +28,8 @@ public class PostService {
 
     // 게시글 등록
     @Transactional
-    public PostDetailResponseDto registerPost(PostRequestDto requestDto, UserDetailsImpl memberProxy) {
-        Member member = memberRepository.findById(memberProxy.getUser().getId()).orElseThrow(
+    public PostDetailResponseDto registerPost(PostRequestDto requestDto, String username) {
+        Member member = memberRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 Id의 회원이 존재하지 않습니다.")
         );
         
@@ -106,5 +106,20 @@ public class PostService {
         }
 
         postRepository.deleteById(id);
+    }
+
+    public void likePost(Long id, UserDetailsImpl memberProxy) {
+        Member member = memberRepository.findById(memberProxy.getUser().getId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 Id의 회원이 존재하지 않습니다.")
+        );
+
+        Post post = postRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
+        );
+
+//        List<Member> likeMembers = post.getLikeMembers();
+////        if(likeMembers.stream().filter())
+//        post.getLikeMembers().add(member);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.coffee.miniproject.security.Provider;
+package com.coffee.miniproject.security.auth.Provider;
 
 import lombok.RequiredArgsConstructor;
 

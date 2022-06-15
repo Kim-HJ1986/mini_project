@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -38,6 +39,11 @@ public class Post extends Timestamped {
 
     @Column(length = 65000)
     private String img;
+
+//    private int likeCnt;
+//
+//    @OneToMany
+//    private List<Member> likeMembers = new ArrayList<>();
 
     // FK로 memberId 들어옴.
     @JsonIgnore
