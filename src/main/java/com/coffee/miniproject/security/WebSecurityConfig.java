@@ -60,11 +60,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/**").permitAll()
+                .antMatchers("/oauth/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/posts").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**")
+                .permitAll()
                 .anyRequest().authenticated()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .apply(new JwtSecurityConfig(tokenProvider))
+
+                .and()
+                .oauth2Login()
+                .loginPage("/user/login")
+                .userInfoEndpoint()
+                .userService(oAuthUserDeatilsService);
 
     }
 
