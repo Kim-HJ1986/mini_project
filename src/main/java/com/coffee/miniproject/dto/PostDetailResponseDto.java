@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class PostDetailResponseDto {
+    private Long id;
 
     private String title;
 
@@ -25,6 +26,7 @@ public class PostDetailResponseDto {
     private boolean category;
 
     public PostDetailResponseDto(Post post){
+        this.id = post.getId();
         this.title = post.getTitle();
         this.contents = post.getContents();
         this.nickname = post.getNickname();

@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.net.MalformedURLException;
@@ -96,6 +97,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.authorizeRequests()
+                .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight Request 허용해주기
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/posts/**").authenticated()
 //                .antMatchers(HttpMethod.PUT, "/api/posts/**").authenticated()
 //                .antMatchers(HttpMethod.DELETE, "/api/posts/**").authenticated()
@@ -142,9 +145,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.addExposedHeader("Set-Cookie");
+        configuration.addExposedHeader("Authorization");
+        configuration.addAllowedOriginPattern("http://amorossoprc.shop/"); // 배포 전 모두 허용  -> 도메인으로 변경!
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOriginPattern("*"); // 배포 전 모두 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

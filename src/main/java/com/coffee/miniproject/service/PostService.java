@@ -82,12 +82,12 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public void updatePost(Long id, PostRequestDto4Put requestDto, Member member) {
+    public void updatePost(Long id, PostRequestDto4Put requestDto, UserDetailsImpl member) {
         Post post = postRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-        if (!Objects.equals(member.getId(), post.getMember().getId())){
+        if (!Objects.equals(member.getUser().getId(), post.getMember().getId())){
             throw new IllegalArgumentException("본인의 게시글만 수정할 수 있습니다.");
         }
 
@@ -96,12 +96,12 @@ public class PostService {
     }
 
     // 게시글 삭제
-    public void deletePost(Long id, Member member) {
+    public void deletePost(Long id, UserDetailsImpl member) {
         Post post = postRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-        if (!Objects.equals(member.getId(), post.getMember().getId())){
+        if (!Objects.equals(member.getUser().getId(), post.getMember().getId())){
             throw new IllegalArgumentException("본인의 게시글만 수정할 수 있습니다.");
         }
 

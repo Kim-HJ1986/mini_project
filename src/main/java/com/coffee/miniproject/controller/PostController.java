@@ -54,7 +54,7 @@ public class PostController {
                            @RequestBody PostRequestDto4Put requestDto
                            ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
+        UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
         // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
         postService.updatePost(id, requestDto, member);
     }
@@ -63,7 +63,7 @@ public class PostController {
     @DeleteMapping("/api/posts/{id}")
     public void deletePost(@PathVariable Long id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
+        UserDetailsImpl member = (UserDetailsImpl) authentication.getPrincipal();
         // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
         postService.deletePost(id, member);
     }

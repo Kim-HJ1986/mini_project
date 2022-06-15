@@ -11,8 +11,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class PostResponseDto {
+    private Long id;
 
     private String title;
+
+    private String contents;
 
     private String nickname;
 
@@ -24,7 +27,9 @@ public class PostResponseDto {
     private boolean category;
 
     public PostResponseDto(Post post){
+        this.id = post.getId();
         this.title = post.getTitle();
+        this.contents = post.getContents();
         this.nickname = post.getNickname();
         this.date = post.getModifiedAt();
         this.img = post.getImg();
