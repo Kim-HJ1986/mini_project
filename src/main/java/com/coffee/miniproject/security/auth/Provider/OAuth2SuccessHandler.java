@@ -45,8 +45,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // 5. 토큰 발급
 
-        targetUrl = UriComponentsBuilder.fromUriString("/")
-                .queryParam("token", tokenDto)
+        targetUrl = UriComponentsBuilder.fromUriString("http://amorossoprc.shop/oauth/redirect")
+                .queryParam("token", tokenDto.getAccessToken())
+                .queryParam("username", tokenDto.getUsername())
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
