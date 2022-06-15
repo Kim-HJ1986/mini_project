@@ -1,5 +1,6 @@
 package com.coffee.miniproject.security;
 
+import com.coffee.miniproject.security.auth.Provider.OAuth2SuccessHandler;
 import com.coffee.miniproject.security.jwt.JwtAccessDeniedHandler;
 import com.coffee.miniproject.security.jwt.JwtAuthenticationEntryPoint;
 import com.coffee.miniproject.security.jwt.JwtSecurityConfig;
@@ -25,6 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
+    private final OAuth2SuccessHandler successHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
@@ -72,8 +74,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login()
                 .loginPage("/user/login")
+                .successHandler(successHandler)
                 .userInfoEndpoint()
                 .userService(oAuthUserDeatilsService);
+
 
     }
 
