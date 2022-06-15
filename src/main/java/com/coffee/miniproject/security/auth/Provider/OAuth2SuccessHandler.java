@@ -48,6 +48,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         targetUrl = UriComponentsBuilder.fromUriString("http://amorossoprc.shop/oauth/redirect")
                 .queryParam("token", tokenDto.getAccessToken())
                 .queryParam("username", tokenDto.getUsername())
+                .queryParam("nickname", tokenDto.getNickname())
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
