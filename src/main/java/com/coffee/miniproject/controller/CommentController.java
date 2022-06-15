@@ -39,7 +39,7 @@ public class CommentController {
     // 댓글 삭제
     @DeleteMapping("/api/post/{postid}/comments/{commentid}")
     public Boolean deleteComment(@PathVariable Long commentid, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        //사용자의 id가 null값인지 검증
+        //사용자 username이 null값인지 검증
         Boolean result = false;
 
         Long memberid = userDetails.getUser().getId();
@@ -52,7 +52,7 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/api/post/{postid}/comments/{commentid}")
     public Boolean updateComment(@PathVariable Long commentid, @RequestBody CommentRequestDto4Put requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        //사용자의 id가 null값인지 검증
+        //사용자 username이 null값인지 검증
         Boolean result = false;
 
         Member memberid = userDetails.getUser();

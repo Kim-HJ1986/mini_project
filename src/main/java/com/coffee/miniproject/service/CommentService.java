@@ -56,7 +56,7 @@ public class CommentService {
 
     // 댓글 삭제
     public Boolean deleteComment(Long id, Long memberid){
-        // comment내의 memberid와 로그인한 member아이디 일치하는지 확인
+        // comment내의 member username과 로그인한 username 일치하는지 확인
         Comment commentByCommentId =  commentRepository.findById(id).get();
         if (!Objects.equals(memberid, commentByCommentId.getMember().getId())) {
             return false;
@@ -70,7 +70,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
         );
-        // comment내의 memberid와 로그인한 member아이디 일치하는지 확인
+        // comment내의 member username과 로그인한 username 일치하는지 확인
         Comment commentByCommentId = commentRepository.findById(id).get();
 
         if (memberid.getId() != commentByCommentId.getMember().getId()) {
