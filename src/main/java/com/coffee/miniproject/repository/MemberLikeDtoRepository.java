@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberLikeDtoRepository extends JpaRepository<MemberLikeDto, Long> {
 
-    MemberLikeDto findByUsername(String username);
+    MemberLikeDto findByUsernameAndPostId(String username, Long postId);
 }

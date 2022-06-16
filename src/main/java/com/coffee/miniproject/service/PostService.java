@@ -121,13 +121,13 @@ public class PostService {
         Object[] objects = likeMembers.stream()
                 .filter(m -> m.getUsername().equals(username)).toArray();
         if(objects.length == 0){
-            MemberLikeDto memberLikeDto = new MemberLikeDto(member.getUsername());
+            MemberLikeDto memberLikeDto = new MemberLikeDto(username, post.getId());
             memberLikeDtoRepository.save(memberLikeDto);
             post.getLikeMembers().add(memberLikeDto);
             post.setLikeCnt(post.getLikeCnt() + 1);
             System.out.println(member.getNickname() + "좋아요가 추가되었습니다");
         }else{
-            MemberLikeDto memberLikeDto = memberLikeDtoRepository.findByUsername(member.getUsername());
+            MemberLikeDto memberLikeDto = memberLikeDtoRepository.findByUsernameAndPostId(username, post.getId());
             post.getLikeMembers().remove(memberLikeDto);
             post.setLikeCnt(post.getLikeCnt() - 1);
             System.out.println(member.getNickname() + "좋아요가 삭제되었습니다");
