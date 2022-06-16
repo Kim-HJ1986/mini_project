@@ -37,7 +37,7 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private PostCategory category;
 
-    @Column(length = 65000)
+    @Column()
     private String img;
 
     @Column
