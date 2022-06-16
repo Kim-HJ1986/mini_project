@@ -1,9 +1,6 @@
 package com.coffee.miniproject.controller;
 
-import com.coffee.miniproject.dto.PostDetailResponseDto;
-import com.coffee.miniproject.dto.PostRequestDto;
-import com.coffee.miniproject.dto.PostRequestDto4Put;
-import com.coffee.miniproject.dto.PostResponseDto;
+import com.coffee.miniproject.dto.*;
 import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.security.UserDetailsImpl;
 import com.coffee.miniproject.service.PostService;
@@ -80,5 +77,11 @@ public class PostController {
         String username = principal.getUsername();
 
         postService.likePost(id, username);
+    }
+
+    // 랭킹 조회
+    @GetMapping("/api/ranks")
+    public RankDto getRanks(){
+        return postService.getRanks();
     }
 }

@@ -38,11 +38,13 @@ public class Member extends Timestamped {
     @Column
     private String provider;
 
+    @JsonIgnore
     @Column
     // 자바 객체 사이드에서만 저장됨 (DB에 저장안됨)
     @OneToMany(mappedBy = "member")
     private List<Post> posts;
 
+    @JsonIgnore
     // 자바 객체 사이드에서만 저장됨 (DB에 저장안됨)
     @OneToMany(mappedBy = "member")
     private List<Comment> comments;

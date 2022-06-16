@@ -11,4 +11,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllByTitleContaining(String search);
 
+    List<Post> findAllByOrderByLikeCntDesc();
+
 }

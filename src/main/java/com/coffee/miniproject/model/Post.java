@@ -43,7 +43,8 @@ public class Post extends Timestamped {
     @Column
     private Long likeCnt;
 
-    @OneToMany
+    @JsonIgnore
+    @ManyToMany
     private List<Member> likeMembers = new ArrayList<>();
 
     // FK로 memberId 들어옴.

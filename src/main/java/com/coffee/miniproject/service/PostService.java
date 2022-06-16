@@ -1,9 +1,6 @@
 package com.coffee.miniproject.service;
 
-import com.coffee.miniproject.dto.PostDetailResponseDto;
-import com.coffee.miniproject.dto.PostRequestDto;
-import com.coffee.miniproject.dto.PostRequestDto4Put;
-import com.coffee.miniproject.dto.PostResponseDto;
+import com.coffee.miniproject.dto.*;
 import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.model.Post;
 import com.coffee.miniproject.model.PostCategory;
@@ -130,6 +127,22 @@ public class PostService {
             System.out.println(member.getNickname() + "좋아요가 삭제되었습니다");
         }
 
+    }
+
+    public RankDto getRanks() {
+        List<Post> allByOOrderByLikeCnt = postRepository.findAllByOrderByLikeCntDesc();
+        int rankSize = 10;
+        RankDto rankDto = new RankDto();
+        rankDto.setIds(new ArrayList<>());
+
+        for (Post post : allByOOrderByLikeCnt) {
+            rankDto.getIds().add(post.getId());
+            if(rankDto.getIds().size() == rankSize){
+                break;
+            }
+        }
+
+        return rankDto;
 
     }
 }
