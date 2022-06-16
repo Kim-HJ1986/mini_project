@@ -40,10 +40,11 @@ public class Post extends Timestamped {
     @Column(length = 65000)
     private String img;
 
-//    private int likeCnt;
-//
-//    @OneToMany
-//    private List<Member> likeMembers = new ArrayList<>();
+    @Column
+    private Long likeCnt;
+
+    @OneToMany
+    private List<Member> likeMembers = new ArrayList<>();
 
     // FK로 memberId 들어옴.
     @JsonIgnore
@@ -63,6 +64,7 @@ public class Post extends Timestamped {
         this.nickname = member.getNickname();
         this.img = requestDto.getImg();
         this.member = member;
+        this.likeCnt = 0L;
         // post 등록될 때 작성자의 게시글 리스트에도 this를 추가해준다!
         member.getPosts().add(this);
 

@@ -1,11 +1,13 @@
 package com.coffee.miniproject.dto;
 
+import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.model.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +27,10 @@ public class PostResponseDto {
 
     private String img;
 
+    private Long likeCnt;
+
+    private List<Member> likeMembers;
+
     // 카테고리도 true false로 넘기기.
     private boolean category;
 
@@ -36,6 +42,9 @@ public class PostResponseDto {
         this.nickname = post.getNickname();
         this.date = post.getModifiedAt();
         this.img = post.getImg();
+        this.likeCnt = post.getLikeCnt();
+        this.likeMembers = post.getLikeMembers();
+
 
         this.category = post.getCategory().name().equals("RECIPE");
     }
