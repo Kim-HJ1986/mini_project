@@ -107,6 +107,7 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
+    @Transactional
     public void likePost(Long id, String username) {
         Member member = memberRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 Id의 회원이 존재하지 않습니다.")
@@ -116,9 +117,19 @@ public class PostService {
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-//        List<Member> likeMembers = post.getLikeMembers();
-////        if(likeMembers.stream().filter())
-//        post.getLikeMembers().add(member);
+        List<Member> likeMembers = post.getLikeMembers();
+        Object[] objects = likeMembers.stream()
+                .filter(m -> m.getUsername().equals(username)).toArray();
+        if(objects.length == 0){
+            post.getLikeMembers().add(member);
+            post.setLikeCnt(post.getLikeCnt() + 1);
+            System.out.println(member.getNickname() + "좋아요가 추가되었습니다");
+        }else{
+            post.getLikeMembers().remove(member);
+            post.setLikeCnt(post.getLikeCnt() - 1);
+            System.out.println(member.getNickname() + "좋아요가 삭제되었습니다");
+        }
+
 
     }
 }

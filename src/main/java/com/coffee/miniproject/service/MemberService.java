@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +54,10 @@ public class MemberService {
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
         tokenDto.setUsername(memberRequestDto.getUsername());
+
+        Member member = memberRepository.findByUsername(memberRequestDto.getUsername()).orElse(null);
+        assert member != null;
+        tokenDto.setNickname(member.getNickname());
 
         // 4. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
