@@ -119,7 +119,7 @@ public class PostService {
 
         List<MemberLikeDto> likeMembers = post.getLikeMembers();
         Object[] objects = likeMembers.stream()
-                .filter(m -> m.getUsername().equals(username)).toArray();
+                .filter(m -> m.getUsername().equals(username) & Objects.equals(m.getPostId(), post.getId())).toArray();
         if(objects.length == 0){
             MemberLikeDto memberLikeDto = new MemberLikeDto(username, post.getId());
             memberLikeDtoRepository.save(memberLikeDto);
