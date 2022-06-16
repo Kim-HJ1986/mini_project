@@ -39,6 +39,8 @@ public class UserDetailsImpl implements UserDetails, OAuth2User {
         return member.getPosts();
     }
 
+    public String getNickname() {return member.getNickname();}
+
     @Override
     public String getPassword() {
         return member.getPassword();

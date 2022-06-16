@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,10 +29,10 @@ public class CommentController {
     public ResponseEntity<Void> registComment (@PathVariable Long postid, @RequestBody CommentRequestDto requestDtoList) {
         //@AuthenticationPrincipal은 null로 받아온다. Authentication으로 받아오기.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
-
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
         // 세션 가져오기...
-        commentService.saveNewComments(postid, member, requestDtoList);
+        commentService.saveNewComments(postid, username, requestDtoList);
         return ResponseEntity.ok().build();
     }
 
@@ -46,12 +47,13 @@ public class CommentController {
     public Boolean deleteComment(@PathVariable Long commentid){
         //@AuthenticationPrincipal은 null로 받아온다. Authentication으로 받아오기.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
         //사용자의 id가 null값인지 검증
         Boolean result = false;
 
-        if (member.getId() != null) {
-            result = commentService.deleteComment(commentid, member);
+        if (username != null) {
+            result = commentService.deleteComment(commentid, username);
         }
 
         return result;
@@ -61,12 +63,13 @@ public class CommentController {
     public Boolean updateComment(@PathVariable Long commentid, @RequestBody CommentRequestDto4Put requestDto){
         //@AuthenticationPrincipal은 null로 받아온다. Authentication으로 받아오기.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
         //사용자의 id가 null값인지 검증
         Boolean result = false;
 
-        if (member.getId() != null) {
-            result = commentService.updateComment(commentid, requestDto, member);
+        if (username != null) {
+            result = commentService.updateComment(commentid, requestDto, username);
         }
         return result;
     }
