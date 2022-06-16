@@ -1,5 +1,6 @@
 package com.coffee.miniproject.model;
 
+import com.coffee.miniproject.dto.MemberLikeDto;
 import com.coffee.miniproject.dto.PostRequestDto;
 import com.coffee.miniproject.dto.PostRequestDto4Put;
 import com.coffee.miniproject.security.UserDetailsImpl;
@@ -45,7 +46,7 @@ public class Post extends Timestamped {
 
     @JsonIgnore
     @ManyToMany
-    private List<Member> likeMembers = new ArrayList<>();
+    private List<MemberLikeDto> likeMembers = new ArrayList<>();
 
     // FK로 memberId 들어옴.
     @JsonIgnore

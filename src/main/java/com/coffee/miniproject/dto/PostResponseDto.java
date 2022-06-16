@@ -29,7 +29,7 @@ public class PostResponseDto {
 
     private Long likeCnt;
 
-    private List<Member> likeMembers;
+    private List<MemberLikeDto> likeMembers;
 
     // 카테고리도 true false로 넘기기.
     private boolean category;

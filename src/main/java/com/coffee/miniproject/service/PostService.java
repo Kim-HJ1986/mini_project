@@ -4,6 +4,7 @@ import com.coffee.miniproject.dto.*;
 import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.model.Post;
 import com.coffee.miniproject.model.PostCategory;
+import com.coffee.miniproject.repository.MemberLikeDtoRepository;
 import com.coffee.miniproject.repository.MemberRepository;
 import com.coffee.miniproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+
+    private final MemberLikeDtoRepository memberLikeDtoRepository;
 //    private final EntityManager em;
 
     // 게시글 등록
@@ -114,15 +117,18 @@ public class PostService {
                 ()-> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-        List<Member> likeMembers = post.getLikeMembers();
+        List<MemberLikeDto> likeMembers = post.getLikeMembers();
         Object[] objects = likeMembers.stream()
                 .filter(m -> m.getUsername().equals(username)).toArray();
         if(objects.length == 0){
-            post.getLikeMembers().add(member);
+            MemberLikeDto memberLikeDto = new MemberLikeDto(member.getUsername());
+            memberLikeDtoRepository.save(memberLikeDto);
+            post.getLikeMembers().add(memberLikeDto);
             post.setLikeCnt(post.getLikeCnt() + 1);
             System.out.println(member.getNickname() + "좋아요가 추가되었습니다");
         }else{
-            post.getLikeMembers().remove(member);
+            MemberLikeDto memberLikeDto = memberLikeDtoRepository.findByUsername(member.getUsername());
+            post.getLikeMembers().remove(memberLikeDto);
             post.setLikeCnt(post.getLikeCnt() - 1);
             System.out.println(member.getNickname() + "좋아요가 삭제되었습니다");
         }
