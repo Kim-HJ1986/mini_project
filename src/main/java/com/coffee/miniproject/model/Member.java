@@ -5,6 +5,7 @@ import com.coffee.miniproject.util.Timestamped;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Member extends Timestamped {
     private String username;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Transient
