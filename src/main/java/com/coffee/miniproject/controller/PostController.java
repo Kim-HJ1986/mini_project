@@ -2,6 +2,7 @@ package com.coffee.miniproject.controller;
 
 import com.coffee.miniproject.dto.*;
 import com.coffee.miniproject.model.Member;
+import com.coffee.miniproject.security.SecurityUtil;
 import com.coffee.miniproject.security.UserDetailsImpl;
 import com.coffee.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +26,13 @@ public class PostController {
 
     // 게시글 등록
     @PostMapping("/api/posts")
-    public PostDetailResponseDto registerPost(@RequestBody PostRequestDto requestDto){
-        //@AuthenticationPrincipal은 null로 받아온다. Authentication으로 받아오기.
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User principal = (User) authentication.getPrincipal();
-        String username = principal.getUsername();
+    public PostDetailResponseDto registerPost(@RequestBody PostRequestDto requestDto,
+                                              @AuthenticationPrincipal User userDetails){
+        // 서버 측 세션 저장소에 저장된 유저 정보는 아래와 같은 방식으로 가져온다.
+        // 1. @AuthenticationPrincipal 어노테이션을 통해 저장된 principal 유형에 맞춰 파라미터에서
+        // 2. 위 어노테이션이 해주는 일을 직접 풀어서 사용 하는 법 -> SecurityContextHolder.getContext().getAuthentication();
+        // 3. 아래와 같이 2번 방식으로 유저 정보를 불러오는 기능을 모듈화하여 사용
+        String username = SecurityUtil.getCurrentMemberUsername();
 
         return postService.registerPost(requestDto, username);
     }
@@ -52,30 +55,21 @@ public class PostController {
     public void updatePost(@PathVariable Long id,
                            @RequestBody PostRequestDto4Put requestDto
                            ){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User principal = (User) authentication.getPrincipal();
-        String username = principal.getUsername();
-        // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
+        String username = SecurityUtil.getCurrentMemberUsername();
         postService.updatePost(id, requestDto, username);
     }
 
     //게시글 삭제
     @DeleteMapping("/api/posts/{id}")
     public void deletePost(@PathVariable Long id){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User principal = (User) authentication.getPrincipal();
-        String username = principal.getUsername();
-        // 시큐리티 완료 후 본인의 게시글인지 check 로직 추가
+        String username = SecurityUtil.getCurrentMemberUsername();
         postService.deletePost(id, username);
     }
 
     // 좋아요 클릭
     @PostMapping("/api/posts/{id}/like")
     public void likePost(@PathVariable Long id){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User principal = (User) authentication.getPrincipal();
-        String username = principal.getUsername();
-
+        String username = SecurityUtil.getCurrentMemberUsername();
         postService.likePost(id, username);
     }
 
