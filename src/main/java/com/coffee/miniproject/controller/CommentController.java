@@ -1,18 +1,10 @@
 package com.coffee.miniproject.controller;
 
-import com.coffee.miniproject.dto.CommentRequestDto;
-import com.coffee.miniproject.dto.CommentRequestDto4Put;
-import com.coffee.miniproject.dto.CommentResponseDto;
-import com.coffee.miniproject.dto.PostRequestDto4Put;
-import com.coffee.miniproject.model.Comment;
-import com.coffee.miniproject.model.Member;
-import com.coffee.miniproject.repository.CommentRepository;
-import com.coffee.miniproject.security.UserDetailsImpl;
+import com.coffee.miniproject.dto.*;
 import com.coffee.miniproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -70,6 +62,22 @@ public class CommentController {
 
         if (username != null) {
             result = commentService.updateComment(commentid, requestDto, username);
+        }
+        return result;
+    }
+    // 댓글 좋아요
+    @PostMapping("/api/post/{postid}/comments/{commentid}/like")
+    public Boolean likeComment(@PathVariable Long commentid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
+        Boolean result = false;
+        // 사용자의 id가 null값인지 검증
+        if (username != null) {
+            commentService.likePost(commentid, username);
+            result = true;
+        } else {
+            result = false;
         }
         return result;
     }

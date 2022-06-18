@@ -1,14 +1,14 @@
 package com.coffee.miniproject.model;
 
-import com.coffee.miniproject.dto.CommentRequestDto;
 import com.coffee.miniproject.dto.CommentRequestDto4Put;
-import com.coffee.miniproject.repository.CommentRepository;
 import com.coffee.miniproject.util.Timestamped;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -34,6 +34,10 @@ public class Comment extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "POST_ID")
     private Post post;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "comment")
+    private List<CommentLike> commentLikes;
 
     @Builder
     public Comment(String contents, Post post, Member member) {

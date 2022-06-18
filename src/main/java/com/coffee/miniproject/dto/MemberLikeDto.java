@@ -24,7 +24,6 @@ public class MemberLikeDto {
     private String username;
 
     private Long postId;
-
     public MemberLikeDto(String username, Long postId){
         this.username = username;
         this.postId = postId;
