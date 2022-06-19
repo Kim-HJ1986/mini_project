@@ -49,6 +49,10 @@ public class Member extends Timestamped {
     @OneToMany(mappedBy = "member")
     private List<Comment> comments;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<CommentLike> commentLikes;
+
 
     public Member(String username, String nickname, String password, UserRole userRole) {
         this.username = username;

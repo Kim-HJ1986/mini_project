@@ -4,8 +4,10 @@ import com.coffee.miniproject.dto.CommentRequestDto;
 import com.coffee.miniproject.dto.CommentRequestDto4Put;
 import com.coffee.miniproject.dto.CommentResponseDto;
 import com.coffee.miniproject.model.Comment;
+import com.coffee.miniproject.model.CommentLike;
 import com.coffee.miniproject.model.Member;
 import com.coffee.miniproject.model.Post;
+import com.coffee.miniproject.repository.CommentLikeRepository;
 import com.coffee.miniproject.repository.CommentRepository;
 import com.coffee.miniproject.repository.MemberRepository;
 import com.coffee.miniproject.repository.PostRepository;
@@ -25,7 +27,9 @@ public class CommentService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    //댓글 등록
+    private final CommentLikeRepository commentLikeRepository;
+
+    // 댓글 등록
     @Transactional
     public void saveNewComments(Long postid, String memberProxy, CommentRequestDto requestDtoList) {
         Member member = memberRepository.findByUsername(memberProxy)
@@ -39,7 +43,7 @@ public class CommentService {
     }
 
 
-    // 댓글조회
+    // 댓글 조회
     @Transactional(readOnly = true)
     public List<CommentResponseDto> getCommentsByPostId(Long postid) {
         List<Comment> commentListByPostId =  commentRepository.findAllByPostId(postid);
@@ -80,5 +84,33 @@ public class CommentService {
             commentRepository.save(comment);
         }
         return true;
+    }
+
+    // 댓글 좋아요
+    public void likePost(Long commentid, String username) {
+        Comment comment = commentRepository.findById(commentid).orElseThrow(
+                () -> new RuntimeException("존재하지 않는 댓글입니다.")
+        );
+
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(RuntimeException::new);
+        // Member가 기존에 Comment에 좋아요를 했는지 확인
+       // CommentLike commentLike = requestDto.toEntity;
+        CommentLike commentLikeByMemberId = commentLikeRepository.findByMemberIdAndCommentId(member.getId(), commentid);
+        if (commentLikeByMemberId == null){
+            // 1. commentLikeByMemberId 가 null인지 확인 -> member가 리플에 좋아요 했는지 판별
+            // 2. CommentLike라는 클래스를 선언
+            // 3. 내부에 CommentLike 내부에는 registCommentLikeInfo로 실질적으로 받아올
+            // 좋아요할 comment의 fk값과 member의 fk값을 저장
+            // 4. 레포지토리에 의해 DB에 저장
+            // 5. 1 검증과성에서 있는 경우 DB에서 삭제
+            CommentLike commentLike = new CommentLike();
+            commentLike.registCommentLikeInfo(comment, member);
+            commentLikeRepository.save(commentLike);
+        }else{
+            //delete
+            // 주의 할 점, Dto는 데이터를 담는 작은 자바 파일
+            commentLikeRepository.delete(commentLikeByMemberId);
+        }
     }
 }
